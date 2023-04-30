@@ -39,8 +39,8 @@ repeater = Planta {
     poderAtaque = 4
 }
 
-sunFlower :: Planta
-sunFlower = Planta {
+sunflower :: Planta
+sunflower = Planta {
     especie = "Sunflower",
     puntoDeVida = 7,
     soles = 1,
@@ -50,7 +50,7 @@ sunFlower = Planta {
 nut :: Planta
 nut = Planta {
     especie = "Nut",
-    puntoDeVida = 0,
+    puntoDeVida = 100,
     soles = 0,
     poderAtaque = 0
 }
@@ -114,3 +114,51 @@ zombiePeligroso :: Zombie -> Bool
 zombiePeligroso zombie = length (accesorios zombie) > 1 || danio zombie > 10
 
 -- Punto 3
+--a
+data LineaDeDefensa = LineaDeDefensa {
+    plantas :: [Planta],
+    zombies :: [Zombie]
+} deriving (Show, Eq)
+
+agregarPlanta :: LineaDeDefensa -> Planta -> LineaDeDefensa
+agregarPlanta lineaDefensa plantaNueva = lineaDefensa { plantas = plantas lineaDefensa ++ [plantaNueva] }
+
+agregarZombie :: LineaDeDefensa -> Zombie -> LineaDeDefensa
+agregarZombie lineaDefensa zombieNuevo = lineaDefensa { zombies = zombies lineaDefensa ++ [zombieNuevo] }
+
+-- b 
+-- Para hacer esta funcion voy a tener que delegar 5 funciones
+-- danioDePlantas hayZombies danioMordiscos cantidadZombiesPeligrosos y todosZombiesPeligrosos
+
+danioDePlantas :: [Planta] -> Int
+danioDePlantas [] = 0
+danioDePlantas (planta:resto) = poderAtaque planta + danioDePlantas resto
+
+danioMordiscos :: [Zombie] -> Int
+danioMordiscos [] = 0
+danioMordiscos (zombie:resto) = danio zombie + danioMordiscos resto
+
+
+hayZombies::[Zombie]->Bool
+hayZombies zombies = length zombies > 0
+
+cantidadZombiesPeligrosos::[Zombie] -> Int
+cantidadZombiesPeligrosos [] = 0
+cantidadZombiesPeligrosos (zombie:resto) | zombiePeligroso zombie = 1 +  cantidadZombiesPeligrosos resto
+                                        | otherwise 0 + cantidadZombiesPeligrosos resto
+
+todosZombiesPeligrosos::[Zombie]->Bool
+todosZombiesPeligrosos zombies = cantidadZombiesPeligrosos zombies == length zombies
+
+
+estaEnPeligro :: LineaDeDefensa -> Bool
+estaEnPeligro linea = (danioDePlantas.plantas linea < danioMordiscos.zombies linea) || (hayZombies && todosZombiesPeligrosos)
+
+--c 
+cantidadDePlantasProveedoras::[Planta] -> Int
+cantidadDePlantasProveedoras [] = 0
+cantidadDePlantasProveedoras (planta:resto) | especialidadPlanta planta == "Proveedora" = 1 + cantidadDePlantasProveedoras resto
+                                            | otherwise 0 + cantidadDePlantasProveedoras resto
+
+necesitaSerDefendida :: LineaDeDefensa -> Bool
+necesitaSerDefendida linea = cantidadDePlantasProveedoras (plantas linea) == length (plantas linea)
