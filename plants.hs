@@ -178,3 +178,16 @@ lineaMixta :: LineaDeDefensa  -> Bool
 lineaMixta linea = head (plantas linea) /= (head. tail) (plantas linea)
 
 -- punto 5
+
+daniarZombie :: Planta -> Zombie -> Zombie
+daniarZombie planta zombie =
+  let ataqueDePlanta = poderAtaque planta
+      nombreReducido = drop ataqueDePlanta (nombre zombie)
+  in zombie { nombre = nombreReducido }
+
+daniarPlanta :: Planta -> Zombie -> Planta
+daniarPlanta planta zombie =
+    let ataqueDeZombie = danio zombie
+        nuevosPuntosDeVida = puntoDeVida planta - ataqueDeZombie
+    in planta { puntoDeVida = nuevosPuntosDeVida }
+
