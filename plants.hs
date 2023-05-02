@@ -175,6 +175,6 @@ necesitaSerDefendida linea = cantidadDePlantasProveedoras (plantas linea) == len
 
 
 lineaMixta :: LineaDeDefensa  -> Bool
-lineaMixta linea = head (plantas linea) /= (head. tail) (plantas linea) 
+lineaMixta linea = head (plantas linea) /= (head. tail) (plantas linea)
 
 -- punto 5
