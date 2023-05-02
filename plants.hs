@@ -105,7 +105,7 @@ gargantuar = Zombie {
 -- a
 especialidadPlanta :: Planta -> [Char]
 especialidadPlanta planta | soles planta > 0 = "Proveedora"
-                        |poderAtaque planta > puntoDeVida planta = "Atacante"
+                        | poderAtaque planta > puntoDeVida planta = "Atacante"
                         | otherwise = "Defensiva"   
 
 -- b
@@ -162,3 +162,17 @@ cantidadDePlantasProveedoras (planta:resto) | especialidadPlanta planta == "Prov
 
 necesitaSerDefendida :: LineaDeDefensa -> Bool
 necesitaSerDefendida linea = cantidadDePlantasProveedoras (plantas linea) == length (plantas linea)
+
+-- casos para prueba, llevar a la consola
+
+-- linea1 = LineaDeDefensa { plantas = [sunflower, sunflower, sunflower], zombies = []}
+
+-- linea2 = LineaDeDefensa { plantas = [peaShooter, peaShooter, sunflower, nut], zombies = [zombieBase, newspaper]}
+
+-- linea3 = LineaDeDefensa { plantas = [sunflower, peaShooter], zombies = [gargantuar, zombieBase, zombieBase]}
+
+--Punto 4
+
+
+lineaMixta :: LineaDeDefensa  -> Bool
+lineaMixta linea = head (plantas linea) /= (head. tail) (plantas linea) 
