@@ -1,5 +1,5 @@
 import Text.Show.Functions()
-import Data.List()
+import Data.List(delete)
 
 -- TP 1
 -- Punto 1
@@ -179,11 +179,11 @@ lineaMixta linea = head (plantas linea) /= (head. tail) (plantas linea)
 
 -- punto 5
 
-daniarZombie :: Planta -> Zombie -> Zombie
-daniarZombie planta zombie =
-  let ataqueDePlanta = poderAtaque planta
-      nombreReducido = drop ataqueDePlanta (nombre zombie)
-  in zombie { nombre = nombreReducido }
+-- daniarZombie :: Planta -> Zombie -> Zombie
+-- daniarZombie planta zombie =
+--   let ataqueDePlanta = poderAtaque planta
+--       nombreReducido = drop ataqueDePlanta (nombre zombie)
+--   in zombie { nombre = nombreReducido }
 
 daniarPlanta :: Planta -> Zombie -> Planta
 daniarPlanta planta zombie =
@@ -200,12 +200,25 @@ Responder (agregar un comentario con la respuesta en el archivo con el código).
 
 i. ¿Qué pasaría al consultar si una línea está en peligro si hubiera
 una cantidad infinita de zombies bases en la misma?
+i. Una de las funciones que utiliza "estaEnPeligro" que es la funcion "cantidadZombiesPeligrosos" entraria en un 
+loop infinito haciendo que esta nunca llegue a tocar el paso base, ya que utilizamos recursividad para manejar
+la cantidad de zombies que hay en una linea
 
 ii. ¿Qué pasaría al consultar si una línea con una cantidad infinita
 de PeaShooters necesita ser defendida? ¿Y con una cantidad
 infinita de Sunflowers?
+ii. Pasaria lo mismo que antes, esta entraria en un loop infinito haciendo que el programa se trabe haciendo que
+no podamos salir de la funcion que esta corriendo para saber cuantas plantas hay en la linea para saber si 
+tiene que ser defendida o no.
 
 iii. Justificar las respuestas conceptualmente.
+iii. 
+Como utilizamos recursividad, siempre vamos a iterar sobre una cantidad de X items hasta llegar a un paso base
+ese paso base seria que items = [] y con eso sabriamos que llegamos al final del bloque que tendriamos que iterar,
+el problema con que tengamos una cantidad infinita de plantas o zombies hace que ese paso base nunca se cumpla
+por lo que jamas llegariamos a tener algo como items = [] siempre vamos a tener mas y mas, entonces
+como no podriamos cumplir un paso base el programa seguiria iterando y iterando hasta tratar de encontrar ese caso
+haciendo que este entre en el bucle infinito que mencionabamos antes
 -}
 
 
@@ -218,3 +231,28 @@ cactus = Planta {
     soles = 0,
     poderAtaque = 0
 }
+
+-- Para esto vamos a tener que armar un nuevo caso en daniarZombie para que cuando sea un catus el que ataque
+-- y se una ballon el zombie atacado, le saque su ballon del inventario
+
+-- Creo una funcion que toma un zombie y un accesorio y devuelve si contiene o no un accesorio en sus accesorios 
+tieneAccesorio :: Zombie -> String -> Bool
+tieneAccesorio zombie accesorio = elem accesorio (accesorios zombie)
+
+quitarAccesorio :: Zombie -> String -> [String]
+quitarAccesorio zombie accesorio = delete accesorio (accesorios zombie)
+
+revisarTipoDePlanta :: Planta -> String -> Bool
+revisarTipoDePlanta planta tipo = especie planta == tipo
+
+obtenerNuevosAccesorios :: Planta -> Zombie -> [String]
+obtenerNuevosAccesorios planta zombie
+  | revisarTipoDePlanta planta "Cactus" && tieneAccesorio zombie "globo" = quitarAccesorio zombie "globo"
+  | otherwise = accesorios zombie
+
+daniarZombie :: Planta -> Zombie -> Zombie
+daniarZombie planta zombie =
+  let ataqueDePlanta = poderAtaque planta
+      nombreReducido = drop ataqueDePlanta (nombre zombie)
+      nuevosAccesorios = obtenerNuevosAccesorios planta zombie
+  in zombie { nombre = nombreReducido, accesorios = nuevosAccesorios }
