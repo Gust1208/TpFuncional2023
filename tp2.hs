@@ -1,5 +1,6 @@
 import Text.Show.Functions()
 import Data.List(delete)
+import Distribution.SPDX (LicenseId(RPL_1_5))
 
 -- TP 1
 -- Punto 1
@@ -277,4 +278,19 @@ fuegoCruzado planta zombie vecesAtacado =
   let zombieAtacado = daniarZombie planta zombie
       plantaAtacada = multiplesAtaquesAPlanta planta zombieAtacado vecesAtacado
   in (plantaAtacada, zombieAtacado)
+
+
+-- Punto 5
+estaMuertaLaPlanta::Planta->Bool
+estaMuertaLaPlanta planta = puntoDeVida planta <= 0
+
+estaMuertoElZombie::Zombie->Bool
+estaMuertoElZombie zombie = nombre zombie == ""
+
+resultadoDelCombate::(Planta,Zombie)->String
+resultadoDelCombate (planta, zombie)
+  | estaMuertaLaPlanta planta && estaMuertoElZombie zombie = "Ambos murieron"
+  | estaMuertaLaPlanta planta = "Murio la planta"
+  | estaMuertoElZombie zombie = "Murio el zombie"
+  | otherwise = "Nadie murio"
 
