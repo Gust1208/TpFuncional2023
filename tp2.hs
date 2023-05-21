@@ -256,3 +256,25 @@ daniarZombie planta zombie =
       nombreReducido = drop ataqueDePlanta (nombre zombie)
       nuevosAccesorios = obtenerNuevosAccesorios planta zombie
   in zombie { nombre = nombreReducido, accesorios = nuevosAccesorios }
+
+
+-- Punto 3 
+
+
+-- Punto 4
+-- Esta funcion lo que hace es tomar una planta, zombie 
+-- y una cantidad X de veces que el zombie va a atacar a la planta
+-- Lo que hago es, uso un fold, con una lambda que usa daniarPlanta y una semilla
+-- que sea el valor inicial de mi planta, despues uso replicate para que genere una lista del estilo
+-- [1,1,1...] que tenga la cantidad de veces atacado para que se aplique X veces esta funcion 
+multiplesAtaquesAPlanta :: Planta -> Zombie -> Int -> Planta
+multiplesAtaquesAPlanta planta zombie vecesAtacado =
+  foldl (\planta _ -> daniarPlanta planta zombie) planta (replicate vecesAtacado 1)
+
+
+fuegoCruzado :: Planta -> Zombie -> Int -> (Planta, Zombie)
+fuegoCruzado planta zombie vecesAtacado =
+  let zombieAtacado = daniarZombie planta zombie
+      plantaAtacada = multiplesAtaquesAPlanta planta zombieAtacado vecesAtacado
+  in (plantaAtacada, zombieAtacado)
+
