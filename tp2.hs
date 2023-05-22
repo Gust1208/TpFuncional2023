@@ -260,26 +260,24 @@ daniarZombie planta zombie =
 
 
 -- Punto 3 
+-- casos para prueba, llevar a la consola
 -- lineas
-linea1 :: LineaDeDefensa
-linea1 = LineaDeDefensa { plantas = [sunflower, sunflower, sunflower], zombies = []}
 
-linea2 :: LineaDeDefensa
-linea2 = LineaDeDefensa { plantas = [peaShooter, peaShooter, sunflower, nut], zombies = [zombieBase, newspaper]}
+--linea1 = LineaDeDefensa { plantas = [sunflower, sunflower, sunflower], zombies = []}
 
-linea3 :: LineaDeDefensa
-linea3 = LineaDeDefensa { plantas = [sunflower, peaShooter], zombies = [gargantuar, zombieBase, zombieBase]}
+--linea2 = LineaDeDefensa { plantas = [peaShooter, peaShooter, sunflower, nut], zombies = [zombieBase, newspaper]}
+
+--linea3 = LineaDeDefensa { plantas = [sunflower, peaShooter], zombies = [gargantuar, zombieBase, zombieBase]}
 
 -- hordas
-septimoRegimiento :: [(Zombie, LineaDeDefensa)]
-septimoRegimiento = [(newspaper, linea1), (balloon, linea2), (balloon, linea3)]
 
-region :: [(Zombie, LineaDeDefensa)]
-region = [(gargantuar, linea1),(gargantuar,linea2),(gargantuar, linea3),(gargantuar, linea1),(gargantuar,linea2),(gargantuar, linea3)]
+--septimoRegimiento = [(newspaper, linea1), (balloon, linea2), (balloon, linea3)]
+
+--region = [(gargantuar, linea1),(gargantuar,linea2),(gargantuar, linea3),(gargantuar, linea1),(gargantuar,linea2),(gargantuar, linea3)]
 
 -- jardin
-jardin :: [LineaDeDefensa]
-jardin = [linea1, linea2, linea3]
+
+--jardin = [linea1, linea2, linea3]
 
 -- obtengo la linea de la horda
 lineaDeLaHorda ::  [(Zombie, LineaDeDefensa)] -> [LineaDeDefensa]
