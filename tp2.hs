@@ -222,7 +222,6 @@ como no podriamos cumplir un paso base el programa seguiria iterando y iterando 
 haciendo que este entre en el bucle infinito que mencionabamos antes
 -}
 
-
 -- Punto 2
 
 cactus :: Planta 
@@ -258,7 +257,6 @@ daniarZombie planta zombie =
       nuevosAccesorios = obtenerNuevosAccesorios planta zombie
   in zombie { nombre = nombreReducido, accesorios = nuevosAccesorios }
 
-
 -- Punto 3 
 -- casos para prueba, llevar a la consola
 -- lineas
@@ -287,8 +285,6 @@ lineaDeLaHorda horda = [xs | (_ , xs) <- horda]
 agregar :: [LineaDeDefensa] -> [(Zombie, LineaDeDefensa)] -> [LineaDeDefensa]
 agregar unJardin unaHorda = unJardin ++ (lineaDeLaHorda unaHorda)
 
-
-
 -- Punto 4
 -- Esta funcion lo que hace es tomar una planta, zombie 
 -- y una cantidad X de veces que el zombie va a atacar a la planta
@@ -299,13 +295,11 @@ multiplesAtaquesAPlanta :: Planta -> Zombie -> Int -> Planta
 multiplesAtaquesAPlanta planta zombie vecesAtacado =
   foldl (\planta _ -> daniarPlanta planta zombie) planta (replicate vecesAtacado 1)
 
-
 fuegoCruzado :: Planta -> Zombie -> Int -> (Planta, Zombie)
 fuegoCruzado planta zombie vecesAtacado =
   let zombieAtacado = daniarZombie planta zombie
       plantaAtacada = multiplesAtaquesAPlanta planta zombieAtacado vecesAtacado
   in (plantaAtacada, zombieAtacado)
-
 
 -- Punto 5
 estaMuertaLaPlanta::Planta->Bool
@@ -321,3 +315,13 @@ resultadoDelCombate (planta, zombie)
   | estaMuertoElZombie zombie = "Murio el zombie"
   | otherwise = "Nadie murio"
 
+-- Punto 6
+
+dameLaPlanta :: [Planta] -> Planta
+dameLaPlanta listaDePlanta = head listaDePlanta 
+
+zombieAtacaPlanta :: [Planta] -> Zombie -> (Planta, Zombie)
+zombieAtacaPlanta listaDePlanta zombie = (dameLaPlanta listaDePlanta, zombie)
+
+ataqueSistemico :: (Planta, Zombie) -> String
+ataqueSistemico  = resultadoDelCombate 
