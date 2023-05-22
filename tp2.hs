@@ -270,12 +270,14 @@ linea2 = LineaDeDefensa { plantas = [peaShooter, peaShooter, sunflower, nut], zo
 linea3 :: LineaDeDefensa
 linea3 = LineaDeDefensa { plantas = [sunflower, peaShooter], zombies = [gargantuar, zombieBase, zombieBase]}
 
+-- hordas
 septimoRegimiento :: [(Zombie, LineaDeDefensa)]
 septimoRegimiento = [(newspaper, linea1), (balloon, linea2), (balloon, linea3)]
 
 region :: [(Zombie, LineaDeDefensa)]
 region = [(gargantuar, linea1),(gargantuar,linea2),(gargantuar, linea3),(gargantuar, linea1),(gargantuar,linea2),(gargantuar, linea3)]
 
+-- jardin
 jardin :: [LineaDeDefensa]
 jardin = [linea1, linea2, linea3]
 
