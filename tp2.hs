@@ -202,14 +202,14 @@ Responder (agregar un comentario con la respuesta en el archivo con el código).
 i. ¿Qué pasaría al consultar si una línea está en peligro si hubiera
 una cantidad infinita de zombies bases en la misma?
 i. Una de las funciones que utiliza "estaEnPeligro" que es la funcion "cantidadZombiesPeligrosos" entraria en un 
-loop infinito haciendo que esta nunca llegue a tocar el paso base, ya que utilizamos recursividad para manejar
+loop infinito haciendo que esta nunca llegue a tocar el caso base, ya que utilizamos recursividad para manejar
 la cantidad de zombies que hay en una linea
 
 ii. ¿Qué pasaría al consultar si una línea con una cantidad infinita
 de PeaShooters necesita ser defendida? ¿Y con una cantidad
 infinita de Sunflowers?
 ii. Pasaria lo mismo que antes, esta entraria en un loop infinito haciendo que el programa se trabe haciendo que
-no podamos salir de la funcion que esta corriendo para saber cuantas plantas hay en la linea para saber si 
+no podamos salir de la funcion que esta ejecutando para saber cuantas plantas hay en la linea para saber si 
 tiene que ser defendida o no.
 
 iii. Justificar las respuestas conceptualmente.
@@ -260,6 +260,30 @@ daniarZombie planta zombie =
 
 
 -- Punto 3 
+-- lineas
+linea1 :: LineaDeDefensa
+linea1 = LineaDeDefensa { plantas = [sunflower, sunflower, sunflower], zombies = []}
+
+linea2 :: LineaDeDefensa
+linea2 = LineaDeDefensa { plantas = [peaShooter, peaShooter, sunflower, nut], zombies = [zombieBase, newspaper]}
+
+linea3 :: LineaDeDefensa
+linea3 = LineaDeDefensa { plantas = [sunflower, peaShooter], zombies = [gargantuar, zombieBase, zombieBase]}
+
+septimoRegimiento :: [(Zombie, LineaDeDefensa)]
+septimoRegimiento = [(newspaper, linea1), (balloon, linea2), (balloon, linea3)]
+
+region :: [(Zombie, LineaDeDefensa)]
+region = [(gargantuar, linea1),(gargantuar,linea2),(gargantuar, linea3),(gargantuar, linea1),(gargantuar,linea2),(gargantuar, linea3)]
+
+jardin :: [LineaDeDefensa]
+jardin = [linea1, linea2, linea3]
+
+lineaDeLaHorda ::  [(Zombie, LineaDeDefensa)] -> [LineaDeDefensa]
+lineaDeLaHorda unaHorda = map ((snd.head) unaHorda)
+
+agregarHoradaAJardin :: [LineaDeDefensa] ->  [(Zombie, LineaDeDefensa)] ->  [LineaDeDefensa]
+agregarHoradaAJardin unJardin hordaZombie = unJardin ++ lineaDeLaHorda
 
 
 -- Punto 4
