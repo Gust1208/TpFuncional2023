@@ -281,11 +281,14 @@ region = [(gargantuar, linea1),(gargantuar,linea2),(gargantuar, linea3),(gargant
 jardin :: [LineaDeDefensa]
 jardin = [linea1, linea2, linea3]
 
+-- obtengo la linea de la horda
 lineaDeLaHorda ::  [(Zombie, LineaDeDefensa)] -> [LineaDeDefensa]
-lineaDeLaHorda unaHorda = map ((snd.head) unaHorda)
+lineaDeLaHorda horda = [xs | (_ , xs) <- horda]
 
-agregarHoradaAJardin :: [LineaDeDefensa] ->  [(Zombie, LineaDeDefensa)] ->  [LineaDeDefensa]
-agregarHoradaAJardin unJardin hordaZombie = unJardin ++ lineaDeLaHorda
+-- agrego la linea de la horda al jardin
+agregar :: [LineaDeDefensa] -> [(Zombie, LineaDeDefensa)] -> [LineaDeDefensa]
+agregar unJardin unaHorda = unJardin ++ (lineaDeLaHorda unaHorda)
+
 
 
 -- Punto 4
