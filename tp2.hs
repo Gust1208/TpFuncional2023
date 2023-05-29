@@ -25,7 +25,7 @@ nivelDeMuerte  zombie = length (nombre zombie)
 -- Plantas
 
 peaShooter :: Planta
-peaShooter = Planta { 
+peaShooter = Planta {
     especie = "PeaShooter",
     puntoDeVida = 5,
     soles = 0,
@@ -56,7 +56,7 @@ nut = Planta {
     poderAtaque = 0
 }
 
-petaGranada :: Planta 
+petaGranada :: Planta
 petaGranada = Planta {
     especie = "PetaGranada",
     puntoDeVida = 25,
@@ -64,7 +64,7 @@ petaGranada = Planta {
     poderAtaque = 100
 }
 
-setaSolar :: Planta 
+setaSolar :: Planta
 setaSolar = Planta {
     especie = "SetaSolar",
     puntoDeVida = 25,
@@ -107,7 +107,7 @@ gargantuar = Zombie {
 especialidadPlanta :: Planta -> [Char]
 especialidadPlanta planta | soles planta > 0 = "Proveedora"
                         | poderAtaque planta > puntoDeVida planta = "Atacante"
-                        | otherwise = "Defensiva"   
+                        | otherwise = "Defensiva"
 
 -- b
 
@@ -120,6 +120,12 @@ data LineaDeDefensa = LineaDeDefensa {
     plantas :: [Planta],
     zombies :: [Zombie]
 } deriving (Show, Eq)
+
+miLinea :: LineaDeDefensa
+miLinea = LineaDeDefensa{
+    plantas = [peaShooter,nut],
+    zombies = [gargantuar]
+}
 
 agregarPlanta :: LineaDeDefensa -> Planta -> LineaDeDefensa
 agregarPlanta lineaDefensa plantaNueva = lineaDefensa { plantas = plantas lineaDefensa ++ [plantaNueva] }
@@ -145,7 +151,7 @@ hayZombies zombies = length zombies > 0
 
 cantidadZombiesPeligrosos :: [Zombie] -> Int
 cantidadZombiesPeligrosos [] = 0
-cantidadZombiesPeligrosos (zombie:resto)  | (zombiePeligroso zombie) = 1 +  cantidadZombiesPeligrosos resto 
+cantidadZombiesPeligrosos (zombie:resto)  | (zombiePeligroso zombie) = 1 +  cantidadZombiesPeligrosos resto
                                     | otherwise = 0 + cantidadZombiesPeligrosos resto
 
 todosZombiesPeligrosos :: [Zombie] -> Bool
@@ -224,7 +230,7 @@ haciendo que este entre en el bucle infinito que mencionabamos antes
 
 -- Punto 2
 
-cactus :: Planta 
+cactus :: Planta
 cactus = Planta {
     especie = "Cactus",
     puntoDeVida = 9,
@@ -318,10 +324,10 @@ resultadoDelCombate (planta, zombie)
 -- Punto 6
 
 dameLaPlanta :: [Planta] -> Planta
-dameLaPlanta listaDePlanta = head listaDePlanta 
+dameLaPlanta listaDePlanta = head listaDePlanta
 
 zombieAtacaPlanta :: [Planta] -> Zombie -> (Planta, Zombie)
 zombieAtacaPlanta listaDePlanta zombie = (dameLaPlanta listaDePlanta, zombie)
 
-ataqueSistemico :: (Planta, Zombie) -> String
-ataqueSistemico  = resultadoDelCombate 
+ataqueSistemico :: [Planta] -> Zombie -> [String]
+ataqueSistemico plantas zombie = map (\planta -> resultadoDelCombate (daniarPlanta planta zombie,zombie)) plantas
