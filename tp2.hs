@@ -359,3 +359,13 @@ c. ¿Què pasaria si la lista esd infinita?
     Esta entraria en un loop infinito haciendo que el programa se trabe haciendo que
     no podamos salir de la funcion que esta ejecutando para saber si tiene que ser defendida o no.
 -}
+
+-- Punto 11
+puntosDeVidaPlantas :: LineaDeDefensa -> Int 
+puntosDeVidaPlantas linea = foldl(total plantas -> total + puntosDeVida plantas )0 linea
+
+sumaMuerteZombie :: LineaDeDefensa -> Int 
+sumaMuerteZombie linea = (length.foldl)( nombre zombies -> nombre + nombreReducido zombies)0 linea
+
+nivelSupervivencia  = puntosDeVidaPlantas - sumaMuerteZombie
+
