@@ -332,6 +332,58 @@ zombieAtacaPlanta listaDePlanta zombie = (dameLaPlanta listaDePlanta, zombie)
 ataqueSistemico :: [Planta] -> Zombie -> [String]
 ataqueSistemico plantas zombie = map (\planta -> resultadoDelCombate (daniarPlanta planta zombie,zombie)) plantas
 
+-- Punto 7
+
+obtenerZombiesDeHorda::[(Zombie,LineaDeDefensa)]->[Zombie]
+obtenerZombiesDeHorda  = map (\(zombie,_) -> zombie)
+
+agregarMultiplesZombiesALinea :: LineaDeDefensa -> [Zombie] -> LineaDeDefensa
+agregarMultiplesZombiesALinea linea zombies = foldl agregarZombie linea zombies
+
+tomarZombiesNoPeligrosos :: LineaDeDefensa -> [Zombie]
+tomarZombiesNoPeligrosos linea = filter (not.zombiePeligroso) (zombies linea)
+
+agregarZombiesNoPeligrososDeHordaALinea::LineaDeDefensa->[(Zombie,LineaDeDefensa)]->LineaDeDefensa
+agregarZombiesNoPeligrososDeHordaALinea linea [] = linea
+agregarZombiesNoPeligrososDeHordaALinea linea horda = agregarMultiplesZombiesALinea linea (obtenerZombiesDeHorda horda)
+
+plantasDespuesDelAtaque::[Planta]->(Planta,Zombie)->[Planta]
+plantasDespuesDelAtaque [] (p,z) = []
+plantasDespuesDelAtaque plantas (p,z) | resultadoDelCombate (p,z) == "Ambos murieron" || resultadoDelCombate (p,z) == "Murio la planta" = tail plantas
+                                                   | otherwise = [p] ++ (tail plantas)
+
+zombiesDespuesDelAtaque::[Zombie]->(Planta,Zombie)->[Zombie]
+zombiesDespuesDelAtaque [] (p,z) = []
+zombiesDespuesDelAtaque zombies (p,z)
+    | resultadoDelCombate (p,z) == "Ambos murieron" || resultadoDelCombate (p,z) == "Murio el zombie" = init zombies
+    | otherwise = (init zombies) ++ [z]
+
+ataqueLinea :: LineaDeDefensa ->[(Zombie,LineaDeDefensa)]-> LineaDeDefensa
+ataqueLinea linea horda =
+  let nuevaLinea = agregarZombiesNoPeligrososDeHordaALinea linea horda
+      zombiesNoPeligrosos = tomarZombiesNoPeligrosos nuevaLinea
+      plantasEnLinea = plantas nuevaLinea
+      primerPlanta = head plantasEnLinea
+      ultimoZombie = last zombiesNoPeligrosos
+      resultadoAtaque = fuegoCruzado primerPlanta ultimoZombie 1
+      nuevasPlantas = plantasDespuesDelAtaque (plantas nuevaLinea) resultadoAtaque
+      nuevosZombies = zombiesDespuesDelAtaque (zombies nuevaLinea) resultadoAtaque
+      resultado = linea { plantas = nuevasPlantas, zombies = nuevosZombies }
+  in if null nuevasPlantas || null nuevosZombies
+       then resultado
+       else ataqueLinea resultado []
+
+
+
+
+lineaDefensa :: LineaDeDefensa
+lineaDefensa = LineaDeDefensa {
+    plantas = [peaShooter, repeater, sunflower],
+    zombies = [zombieBase]
+}
+
+lineaFinal :: LineaDeDefensa
+lineaFinal = ataqueLinea lineaDefensa []
 
 -- Punto 9 ' 
 
