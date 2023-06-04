@@ -336,7 +336,7 @@ ataqueSistemico plantas zombie = map (\planta -> resultadoDelCombate (daniarPlan
 -- Punto 9 ' 
 
 tieneMenosLetras :: Zombie -> LineaDeDefensa -> Bool
-tieneMenosLetras unZombie unaLinea = all (\ zombies -> length (nombre zombies )  < length (nombre unZombie)) (zombies unaLinea)
+tieneMenosLetras unZombie unaLinea = all (\ zombie -> length (nombre zombie )  < length (nombre unZombie)) (zombies unaLinea)
 
 -- Punto 10.
 -- Explicar qué hace la función y dar los tipos de la función:
