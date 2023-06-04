@@ -385,7 +385,10 @@ lineaDefensa = LineaDeDefensa {
 lineaFinal :: LineaDeDefensa
 lineaFinal = ataqueLinea lineaDefensa []
 
--- Punto 9 ' 
+-- Punto 8
+
+
+-- Punto 9 
 
 tieneMenosLetras :: Zombie -> LineaDeDefensa -> Bool
 tieneMenosLetras unZombie unaLinea = all (\ zombie -> length (nombre zombie )  < length (nombre unZombie)) (zombies unaLinea)
@@ -417,8 +420,8 @@ puntosDeVidaPlantas :: LineaDeDefensa -> Int
 puntosDeVidaPlantas linea = foldl(\ total planta -> total + (puntoDeVida planta)  )0 (plantas linea)
 
 sumaMuerteZombie :: LineaDeDefensa -> Int 
-sumaMuerteZombie linea = length (foldl(\ nombre zombie -> nombre + (nombre zombie)) (zombies linea))
+sumaMuerteZombie linea = foldl(\ suma zombie -> suma + length (nombre zombie )  )0 (zombies linea)
 
 nivelSupervivencia :: LineaDeDefensa -> Int
-nivelSupervivencia  = puntosDeVidaPlantas - sumaMuerteZombie
+nivelSupervivencia linea  = puntosDeVidaPlantas linea - sumaMuerteZombie linea
 
