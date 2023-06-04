@@ -411,9 +411,6 @@ theZombiesAteYourBrains jardin horda =
     in sinPlantasEnJardin
 
 
--- Punto 8
-
-
 -- Punto 9 
 
 tieneMenosLetras :: Zombie -> LineaDeDefensa -> Bool
