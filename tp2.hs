@@ -362,10 +362,10 @@ c. ¿Què pasaria si la lista esd infinita?
 
 -- Punto 11
 puntosDeVidaPlantas :: LineaDeDefensa -> Int 
-puntosDeVidaPlantas linea = foldl(\ total planta -> total + (puntosDeVida planta)  )0 (plantas linea)
+puntosDeVidaPlantas linea = foldl(\ total planta -> total + (puntoDeVida planta)  )0 (plantas linea)
 
 sumaMuerteZombie :: LineaDeDefensa -> Int 
-sumaMuerteZombie linea = length (foldl(\ nombre zombie -> nombre + (nombre zombie))  (zombies linea))
+sumaMuerteZombie linea = length (foldl(\ nombre zombie -> nombre + (nombre zombie)) (zombies linea))
 
 nivelSupervivencia :: LineaDeDefensa -> Int
 nivelSupervivencia  = puntosDeVidaPlantas - sumaMuerteZombie
