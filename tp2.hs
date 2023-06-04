@@ -336,7 +336,7 @@ ataqueSistemico plantas zombie = map (\planta -> resultadoDelCombate (daniarPlan
 -- Punto 9 ' 
 
 tieneMenosLetras :: Zombie -> LineaDeDefensa -> Bool
-tieneMenosLetras unZombie unaLinea = all (\ zombies ->  (nombre zombies ) )  unaLinea < length (nombre unZombie)
+tieneMenosLetras unZombie unaLinea = all (\ zombies -> length (nombre zombies )  < length (nombre unZombie)) unaLinea
 
 -- Punto 10.
 -- Explicar qué hace la función y dar los tipos de la función:
@@ -362,10 +362,11 @@ c. ¿Què pasaria si la lista esd infinita?
 
 -- Punto 11
 puntosDeVidaPlantas :: LineaDeDefensa -> Int 
-puntosDeVidaPlantas linea = foldl(total plantas -> total + puntosDeVida plantas )0 linea
+puntosDeVidaPlantas linea = foldl(\ total planta -> total + (puntosDeVida planta)  )0 (plantas linea)
 
 sumaMuerteZombie :: LineaDeDefensa -> Int 
-sumaMuerteZombie linea = (length.foldl)( nombre zombies -> nombre + nombreReducido zombies)0 linea
+sumaMuerteZombie linea = length (foldl(\ nombre zombie -> nombre + (nombre zombie))  (zombies linea))
 
+nivelSupervivencia :: LineaDeDefensa -> Int
 nivelSupervivencia  = puntosDeVidaPlantas - sumaMuerteZombie
 
