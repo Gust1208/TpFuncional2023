@@ -331,3 +331,31 @@ zombieAtacaPlanta listaDePlanta zombie = (dameLaPlanta listaDePlanta, zombie)
 
 ataqueSistemico :: [Planta] -> Zombie -> [String]
 ataqueSistemico plantas zombie = map (\planta -> resultadoDelCombate (daniarPlanta planta zombie,zombie)) plantas
+
+
+-- Punto 9 ' 
+
+tieneMenosLetras :: Zombie -> LineaDeDefensa -> Bool
+tieneMenosLetras unZombie unaLinea = all (\ zombies ->  (nombre zombies ) )  unaLinea < length (nombre unZombie)
+
+-- Punto 10.
+-- Explicar qué hace la función y dar los tipos de la función:
+
+f :: Eq p => p -> (p -> p -> Bool) -> (p, b) -> [p] -> p
+f h m p lista
+    | elem h lista = head (filter (m h) lista)
+    | otherwise = fst p
+
+
+{-
+a. Indicar todos los conceptos que se aplican acá.
+    Función, guardas, tuplas, listas, operaciones sobre listas y tuplas.
+b. ¿Se puede mejorar la función? En caso afirmativo realizarlo.
+    se podria darle mas expesividad, otra forma de hacer la función seria usando freee point:
+    f h m p lista
+    | elem h lista = (head .fliter)(m h) lista
+    | otherwise = fst p
+c. ¿Què pasaria si la lista esd infinita?
+    Esta entraria en un loop infinito haciendo que el programa se trabe haciendo que
+    no podamos salir de la funcion que esta ejecutando para saber si tiene que ser defendida o no.
+-}
