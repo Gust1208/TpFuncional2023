@@ -358,8 +358,8 @@ zombiesDespuesDelAtaque zombies (p,z)
     | resultadoDelCombate (p,z) == "Ambos murieron" || resultadoDelCombate (p,z) == "Murio el zombie" = init zombies
     | otherwise = (init zombies) ++ [z]
 
-ataqueLinea :: LineaDeDefensa ->[(Zombie,LineaDeDefensa)]-> LineaDeDefensa
-ataqueLinea linea horda =
+resultadoDeAtaque :: LineaDeDefensa ->[(Zombie,LineaDeDefensa)]-> LineaDeDefensa
+resultadoDeAtaque linea horda =
   let nuevaLinea = agregarZombiesNoPeligrososDeHordaALinea linea horda
       zombiesNoPeligrosos = tomarZombiesNoPeligrosos nuevaLinea
       plantasEnLinea = plantas nuevaLinea
@@ -371,19 +371,45 @@ ataqueLinea linea horda =
       resultado = linea { plantas = nuevasPlantas, zombies = nuevosZombies }
   in if null nuevasPlantas || null nuevosZombies
        then resultado
-       else ataqueLinea resultado []
+       else resultadoDeAtaque resultado []
 
 
+-- Punto 8
+-- theZombiesAteUrBrain jardin horda
+poblarLinea :: [LineaDeDefensa] -> (Zombie, LineaDeDefensa) -> [LineaDeDefensa]
+poblarLinea [] _ = []
+poblarLinea (linea:restoJardin) (zombie, lineaHorda)
+    | linea == lineaHorda = agregarZombie linea zombie : restoJardin
+    | otherwise = linea : poblarLinea restoJardin (zombie, lineaHorda)
 
+poblarJardin :: [LineaDeDefensa] -> [(Zombie, LineaDeDefensa)] -> [LineaDeDefensa]
+poblarJardin jardin [] = jardin
+poblarJardin jardin horda = foldl poblarLinea jardin horda
 
-lineaDefensa :: LineaDeDefensa
-lineaDefensa = LineaDeDefensa {
-    plantas = [peaShooter, repeater, sunflower],
-    zombies = [zombieBase]
-}
+-- Una vez poblado el jardin con la horda vamos a tener que ver si cuando todos los zombies de una linea atacan, matan a todas las plantas
+ataqueLinea :: LineaDeDefensa -> LineaDeDefensa
+ataqueLinea linea =
+  let plantasEnLinea = plantas linea
+      primerPlanta = head plantasEnLinea
+      ultimoZombie = last (zombies linea)
+      resultadoAtaque = fuegoCruzado primerPlanta ultimoZombie 1
+      nuevasPlantas = plantasDespuesDelAtaque (plantas linea) resultadoAtaque
+      nuevosZombies = zombiesDespuesDelAtaque (zombies linea) resultadoAtaque
+      resultado = linea { plantas = nuevasPlantas, zombies = nuevosZombies }
+  in if null nuevasPlantas || null nuevosZombies
+       then resultado
+       else ataqueLinea resultado
 
-lineaFinal :: LineaDeDefensa
-lineaFinal = ataqueLinea lineaDefensa []
+sinPlantas::LineaDeDefensa->Bool
+sinPlantas linea = null (plantas linea)
+
+theZombiesAteYourBrains::[LineaDeDefensa]->[(Zombie,LineaDeDefensa)]->Bool
+theZombiesAteYourBrains jardin horda =
+    let nuevoJardin = poblarJardin jardin horda
+        nuevasLineas = map ataqueLinea nuevoJardin
+        sinPlantasEnJardin = all sinPlantas nuevasLineas
+    in sinPlantasEnJardin
+
 
 -- Punto 8
 
@@ -416,10 +442,10 @@ c. ¿Què pasaria si la lista esd infinita?
 -}
 
 -- Punto 11
-puntosDeVidaPlantas :: LineaDeDefensa -> Int 
+puntosDeVidaPlantas :: LineaDeDefensa -> Int
 puntosDeVidaPlantas linea = foldl(\ total planta -> total + (puntoDeVida planta)  )0 (plantas linea)
 
-sumaMuerteZombie :: LineaDeDefensa -> Int 
+sumaMuerteZombie :: LineaDeDefensa -> Int
 sumaMuerteZombie linea = foldl(\ suma zombie -> suma + length (nombre zombie )  )0 (zombies linea)
 
 nivelSupervivencia :: LineaDeDefensa -> Int
